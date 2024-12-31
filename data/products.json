@@ -1,0 +1,32 @@
+{
+    "products": [
+      {
+        "product_id": 101,
+        "name": "Laptop",
+        "description": "15-inch, 8GB RAM, 512GB SSD",
+        "price": 50.00,
+        "category": "Electronics",
+        "stock_quantity": 20,
+        "image_url": "https://example.com/images/laptop.jpg"
+      },
+      {
+        "product_id": 102,
+        "name": "Smartphone",
+        "description": "5.5-inch, 64GB Storage",
+        "price": 35.00,
+        "category": "Electronics",
+        "stock_quantity": 30,
+        "image_url": "https://example.com/images/smartphone.jpg"
+      },
+      {
+        "product_id": 103,
+        "name": "Wireless Headphones",
+        "description": "Noise-canceling, Bluetooth",
+        "price": 50.00,
+        "category": "Accessories",
+        "stock_quantity": 15,
+        "image_url": "https://example.com/images/headphones.jpg"
+      }
+    ]
+  }
+  
