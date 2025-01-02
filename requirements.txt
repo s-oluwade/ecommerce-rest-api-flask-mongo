@@ -1,3 +1,7 @@
 Flask==3.1.0
 flask-cors
 pymongo
+pylint
+pytest
+requests
+docker-compose
