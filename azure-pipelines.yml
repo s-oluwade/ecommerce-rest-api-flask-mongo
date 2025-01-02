@@ -26,7 +26,7 @@ steps:
   displayName: 'Verify Python version'
 
 - script: |
-    pip install "PyYAML>=3.10,<6"
+    pip install "PyYAML==5.3.1"
     pip install -r requirements.txt
   displayName: 'Install Python dependencies'
 
