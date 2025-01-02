@@ -44,7 +44,7 @@ steps:
     Dockerfile: '$(Build.SourcesDirectory)/Dockerfile'
     tags: |
       $(dockerTag)
-    containerRegistry: 'dockerhub'
+    containerRegistry: 'dockerhub-connection'
     buildContext: '$(Build.SourcesDirectory)'
   displayName: 'Build and Push Docker Image'
 
