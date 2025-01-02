@@ -25,7 +25,8 @@ steps:
   displayName: 'Verify Python version'
 
 - script: |
-    pip install --only-binary :all: PyYAML -r requirements.txt
+    pip install PyYAML>=3.10,<6
+    pip install -r requirements.txt
   displayName: 'Install Python dependencies'
 
 # Step 2: Static code analysis with Pylint
