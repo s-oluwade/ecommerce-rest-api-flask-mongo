@@ -25,7 +25,7 @@ steps:
   displayName: 'Verify Python version'
 
 - script: |
-    pip install -r requirements.txt
+    pip install --only-binary :all: PyYAML -r requirements.txt
   displayName: 'Install Python dependencies'
 
 # Step 2: Static code analysis with Pylint
