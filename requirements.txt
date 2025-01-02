@@ -1,7 +1,7 @@
-Flask==3.1.0
-flask-cors
-pymongo
-pylint
-pytest
-requests
-docker-compose
+Flask==2.3.3
+flask-cors==4.0.0
+pymongo==4.5.0
+pylint==2.17.5
+pytest==7.4.0
+requests==2.31.0
+docker-compose==1.29.2
