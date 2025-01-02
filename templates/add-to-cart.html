@@ -1,0 +1,54 @@
+<h1>Shopping Cart</h1>
+<form id="cartForm">
+    <label for="productSelect">Product:</label>
+    <select id="productSelect" name="productId" required>
+        <option value="" disabled selected>Select a product</option>
+        <option value="101">Laptop</option>
+        <option value="102">Smartphone</option>
+        <option value="103">Wireless Headphones</option>
+    </select>
+    <label for="productQuantity">Quantity:</label>
+    <input type="number" id="productQuantity" name="productQuantity" placeholder="Quantity" min="1" required>
+    <input type="number" id="userId" name="userId" value="2" hidden="true">
+    <button type="submit">Add to Cart</button>
+</form>
+
+<script>
+    const form = document.getElementById('cartForm');
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const formData = new FormData(form);
+        const data = {
+            user_id: formData.get('userId'),
+            items: [
+                {
+                    productId: formData.get('productId'),
+                    quantity: formData.get('productQuantity'),
+                }
+            ]
+        };
+
+        try {
+            const response = await fetch('http://localhost:5000/api/carts', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            });
+
+            if (response.ok) {
+                alert('Product added to cart!');
+            } else {
+                alert('Failed to add product to cart.');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('An error occurred.');
+        }
+
+        form.reset();
+    });
+</script>
