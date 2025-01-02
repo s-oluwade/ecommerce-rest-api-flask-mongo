@@ -16,7 +16,7 @@ steps:
 # Step 1: Install prerequisites
 - task: UsePythonVersion@0
   inputs:
-    versionSpec: '3.x'
+    versionSpec: '3.11.x'
     addToPath: true
 
 - script: |
