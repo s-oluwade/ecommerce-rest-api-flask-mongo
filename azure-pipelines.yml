@@ -1,0 +1,72 @@
+trigger:
+  branches:
+    include:
+      - main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  dockerHubUsername: 'bluesamuel'
+  dockerImageName: 'ecommerce-api-flask-app'
+  dockerTag: 'latest'
+
+steps:
+
+# Step 1: Install prerequisites
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: '3.11.x'
+    addToPath: true
+
+- script: |
+    python --version
+    pip --version
+  displayName: 'Verify Python version'
+
+- script: |
+    pip install --only-binary :all: PyYAML -r requirements.txt
+  displayName: 'Install Python dependencies'
+
+# Step 2: Static code analysis with Pylint
+- script: |
+    python -m pylint . > pylint-report.txt
+    cat pylint-report.txt
+  displayName: 'Run Pylint Static Code Analysis'
+
+# Step 3: Run unit tests using requests (assuming you have unit tests written)
+- script: |
+    
+    pytest --maxfail=1 --disable-warnings -q
+  displayName: 'Run Unit Tests'
+
+# Step 4: Build Docker image
+- task: Docker@2
+  inputs:
+    command: 'buildAndPush'
+    repository: '$(dockerHubUsername)/$(dockerImageName)'
+    Dockerfile: '$(Build.SourcesDirectory)/Dockerfile'
+    tags: |
+      $(dockerTag)
+    containerRegistry: 'dockerhub-connection'
+    buildContext: '$(Build.SourcesDirectory)'
+  displayName: 'Build and Push Docker Image'
+
+# Step 5: Deploy using Docker Compose
+- script: |
+    docker-compose -f docker-compose.yml up -d
+  displayName: 'Deploy Application using Docker Compose'
+
+# Step 6: Ensure Containers are Running
+- script: |
+    sleep 10  # Wait for containers to start
+    docker ps
+    docker inspect --format '{{.State.Running}}' $(dockerImageName)
+    docker inspect --format '{{.State.Running}}' mongodb
+  displayName: 'Ensure Containers are Running'
+
+# Step 7: Clean up (optional)
+- script: |
+    docker-compose down
+  displayName: 'Clean Up Containers'
+
