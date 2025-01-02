@@ -20,7 +20,11 @@ steps:
     addToPath: true
 
 - script: |
-    python -m pip install --upgrade pip
+    python --version
+    pip --version
+  displayName: 'Verify Python version'
+
+- script: |
     pip install -r requirements.txt
   displayName: 'Install Python dependencies'
 
