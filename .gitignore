@@ -47,7 +47,6 @@ dist/
 
 # Docker-related files
 docker-compose.override.yml
-docker-compose.yml
 
 # Sentry config (if using)
 .sentryclirc
