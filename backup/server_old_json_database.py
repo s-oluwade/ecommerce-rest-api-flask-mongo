@@ -12,7 +12,6 @@ CORS(app)
 client = MongoClient('mongodb://mongodb:27017/')  # 'mongodb' is the service name in docker-compose
 db = client['mydatabase']  # Use the database named 'mydatabase'
 carts_collection = db['carts']  # Use the 'carts' collection
-products_collection = db['products']
 
 @app.route('/')
 def home():
@@ -25,17 +24,10 @@ def manage_cart_page():
 # curl -X GET http://localhost:5000/api/carts
 @app.route('/api/carts')
 def get_carts():
-    # Retrieve all carts from the MongoDB collection
-    carts = carts_collection.find()  # This returns a cursor, not a list
-
-    # Convert the MongoDB documents to a list of dictionaries
-    carts_list = list(carts)
-
-    # Convert ObjectId to string for serialization
-    for cart in carts_list:
-        cart['_id'] = str(cart['_id'])  # MongoDB _id is ObjectId, so we convert it to string
-
-    return jsonify(carts_list)
+    with open('data/carts.json', 'r') as file:
+        data = json.load(file)
+        print(data)
+    return data
 
 @app.route('/api/carts', methods=['POST', 'PUT'])
 def manage_cart():
@@ -45,7 +37,12 @@ def manage_cart():
     if 'user_id' not in data or 'items' not in data:
         return jsonify({'error': 'Invalid input. user_id and items are required.'}), 400
 
+    # with open('data/carts.json', 'r') as file:
+    #     carts_data = json.load(file)
+    #     carts = carts_data["carts"]
+
     user_id = int(data['user_id'])
+    # existing_cart = next((cart for cart in carts if cart['user_id'] == user_id), None)
     # Check if a cart for this user exists
     existing_cart = carts_collection.find_one({'user_id': user_id})
 
@@ -66,44 +63,67 @@ def manage_cart():
             carts_collection.insert_one(new_cart)
             return jsonify({'message': 'Cart created'}), 201
 
+    # if request.method == 'POST':
+    #     # Remove any previous cart for the customer
+    #     carts = [cart for cart in carts if cart['user_id'] != user_id]
+
+    #     # Create cart
+    #     new_cart = {
+    #         'user_id': user_id,
+    #         'cart_id': carts.count,
+    #         'items': data['items']
+    #     }
+    #     carts.append(new_cart)
+    #     response = new_cart
+    #     status_code = 201  # Created
+
+    # elif request.method == 'PUT':
+    #     if not existing_cart:
+    #         return jsonify({'error': 'Cart not found for the specified customer_id.'}), 404
+        
+    #     existing_cart['items'] = data['items']
+    #     response = existing_cart
+    #     status_code = 200  # OK
+
+    # with open('data/carts.json', 'w') as file:
+    #     json.dump(carts, file)
+
+    # return jsonify(response), status_code
+
 # curl -X DELETE http://localhost:5000/api/carts/1
 @app.route('/api/carts/<int:cart_id>', methods=['DELETE'])
 def delete_cart(cart_id):
-    # Delete the cart document where the 'user_id' matches the provided cart_id
-    result = carts_collection.delete_one({'user_id': cart_id})
+    with open('data/carts.json', 'r') as file:
+        carts = json.load(file)
 
-    if result.deleted_count > 0:
-        return jsonify({'message': 'Cart deleted'}), 200
-    else:
-        return jsonify({'message': 'Cart not found'}), 404
+    carts = [cart for cart in carts if cart['user_id']!= cart_id]
 
-# Get all products
+    with open('data/carts.json', 'w') as file:
+        json.dump(carts, file)
+
+    return jsonify({'message': 'Cart deleted'})
+
+# get products
+# curl -X GET http://localhost:5000/api/products
 @app.route('/api/products')
 def get_products():
-    # Retrieve all products from the MongoDB collection
-    products = products_collection.find()  # This returns a cursor, not a list
+    with open('data/products.json', 'r') as file:
+        data = json.load(file)
+        print(data)
+    return data
 
-    # Convert the MongoDB documents to a list of dictionaries
-    products_list = list(products)
-
-    # Convert ObjectId to string for serialization
-    for product in products_list:
-        product['_id'] = str(product['_id'])  # MongoDB _id is ObjectId, so we convert it to string
-
-    return jsonify(products_list)
-
-# Get a single product by ID
+# get product by id
+# curl -X GET http://localhost:5000/api/products/1
 @app.route('/api/products/<int:product_id>')
 def get_product(product_id):
-    # Retrieve a product by its ID from MongoDB
-    product = products_collection.find_one({'id': product_id})
+    with open('data/products.json', 'r') as file:
+        data = json.load(file)
 
-    if product:
-        # Convert ObjectId to string for serialization
-        product['_id'] = str(product['_id'])
-        return jsonify(product)
-    else:
-        return jsonify({'message': 'Product not found'}), 404
+    for product in data:
+        if product['id'] == product_id:
+            return product
+
+    return jsonify({'message': 'Product not found'}), 404
 
 if __name__ == '__main__':
     app.run(debug=True)

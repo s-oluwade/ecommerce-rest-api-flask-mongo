@@ -35,7 +35,7 @@ def test_update_cart():
         'items': [{'product_id': 1, 'quantity': 3}]
     }
 
-    response = requests.put(f'{BASE_URL}/api/carts', json=updated_cart)
+    response = requests.post(f'{BASE_URL}/api/carts', json=updated_cart)
     
     assert response.status_code == 200  # Check if status code is 200 (OK)
     message = response.json().get('message')
@@ -70,7 +70,7 @@ def test_get_products():
 
 # Test GET /api/products/{product_id} endpoint
 def test_get_product_by_id():
-    response = requests.get(f'{BASE_URL}/api/products/1')
+    response = requests.get(f'{BASE_URL}/api/products/101')
     
     assert response.status_code == 200  # Check if status code is 200
     product = response.json()  # Convert response to JSON
