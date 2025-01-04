@@ -38,8 +38,7 @@ steps:
 # Step 3: Run unit tests using requests (assuming you have unit tests written)
 - script: |
     ls
-    whereis test_server.py
-    pytest .\tests\test_server.py -q
+    pytest tests/test_server.py -q
   displayName: 'Run Unit Tests'
 
 # Step 4: Build Docker image
