@@ -8,6 +8,6 @@
   },
   {
     "user_id": 2,
-    "items": [{ "productId": "101", "quantity": "3" }]
+    "items": [{ "productId": 101, "quantity": 3 }]
   }
 ]

@@ -1,54 +1,60 @@
-<h1>Shopping Cart</h1>
-<form id="cartForm">
-    <label for="productSelect">Product:</label>
-    <select id="productSelect" name="productId" required>
-        <option value="" disabled selected>Select a product</option>
-        <option value="101">Laptop</option>
-        <option value="102">Smartphone</option>
-        <option value="103">Wireless Headphones</option>
-    </select>
-    <label for="productQuantity">Quantity:</label>
-    <input type="number" id="productQuantity" name="productQuantity" placeholder="Quantity" min="1" required>
-    <input type="number" id="userId" name="userId" value="2" hidden="true">
-    <button type="submit">Add to Cart</button>
-</form>
+{% extends "base.html" %}
 
-<script>
-    const form = document.getElementById('cartForm');
+{% block title %}Add To Cart - My Flask App{% endblock %}
 
-    form.addEventListener('submit', async (e) => {
-        e.preventDefault();
+{% block content %}
+    <h1>Shopping Cart</h1>
+    <form id="cartForm">
+        <label for="productSelect">Product:</label>
+        <select id="productSelect" name="productId" required>
+            <option value="" disabled selected>Select a product</option>
+            <option value="6777aa9f9a51b49961e628eb">Laptop</option>
+            <option value="6777ab1a9a51b49961e628ec">Smartphone</option>
+            <option value="6777ab519a51b49961e628ed">Wireless Headphones</option>
+        </select>
+        <label for="productQuantity">Quantity:</label>
+        <input type="number" id="productQuantity" name="productQuantity" placeholder="Quantity" min="1" required>
+        <input type="number" id="userId" name="userId" value=2 hidden="true">
+        <button type="submit">Add to Cart</button>
+    </form>
 
-        const formData = new FormData(form);
-        const data = {
-            user_id: formData.get('userId'),
-            items: [
-                {
-                    productId: formData.get('productId'),
-                    quantity: formData.get('productQuantity'),
+    <script>
+        const form = document.getElementById('cartForm');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const formData = new FormData(form);
+            const data = {
+                user_id: formData.get('userId'),
+                items: [
+                    {
+                        productId: formData.get('productId'),
+                        quantity: formData.get('productQuantity'),
+                    }
+                ]
+            };
+
+            try {
+                const response = await fetch('http://localhost:5000/api/carts', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data),
+                });
+
+                if (response.ok) {
+                    alert('Product added to cart!');
+                } else {
+                    alert('Failed to add product to cart.');
                 }
-            ]
-        };
-
-        try {
-            const response = await fetch('http://localhost:5000/api/carts', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data),
-            });
-
-            if (response.ok) {
-                alert('Product added to cart!');
-            } else {
-                alert('Failed to add product to cart.');
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred.');
             }
-        } catch (error) {
-            console.error('Error:', error);
-            alert('An error occurred.');
-        }
 
-        form.reset();
-    });
-</script>
+            form.reset();
+        });
+    </script>
+{% endblock %}

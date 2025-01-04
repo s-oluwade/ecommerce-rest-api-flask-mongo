@@ -19,7 +19,7 @@ def test_get_carts():
 def test_create_cart():
     new_cart = {
         'user_id': 1,
-        'items': [{'product_id': 1, 'quantity': 2}]
+        'items': [{'product_id': '6777ab1a9a51b49961e628ec', 'quantity': 2}]
     }
 
     response = requests.post(f'{BASE_URL}/api/carts', json=new_cart)
@@ -27,12 +27,14 @@ def test_create_cart():
     assert response.status_code == 201  # Check if status code is 201 (Created)
     message = response.json().get('message')
     assert message == 'Cart created'  # Check if the message is correct
+    cart_id = response.json().get('cart_id')
+    requests.delete(f'{BASE_URL}/api/carts/{cart_id}')
 
 # Test PUT /api/carts endpoint (update existing cart)
 def test_update_cart():
     updated_cart = {
         'user_id': 1,
-        'items': [{'product_id': 1, 'quantity': 3}]
+        'items': [{'product_id': '6777aa9f9a51b49961e628eb', 'quantity': 3}]
     }
 
     response = requests.post(f'{BASE_URL}/api/carts', json=updated_cart)
@@ -46,13 +48,13 @@ def test_delete_cart():
     # First create a cart to delete
     new_cart = {
         'user_id': 2,
-        'items': [{'product_id': 2, 'quantity': 1}]
+        'items': [{'product_id': '6777ab1a9a51b49961e628ec', 'quantity': 1}]
     }
-    requests.post(f'{BASE_URL}/api/carts', json=new_cart)
-    
+    create_cart_response = requests.post(f'{BASE_URL}/api/carts', json=new_cart)
+    cart_id = create_cart_response.json().get('cart_id')
+
     # Delete the cart
-    response = requests.delete(f'{BASE_URL}/api/carts/2')
-    
+    response = requests.delete(f'{BASE_URL}/api/carts/{cart_id}')
     assert response.status_code == 200  # Check if status code is 200 (OK)
     message = response.json().get('message')
     assert message == 'Cart deleted'  # Check if the message is correct
@@ -66,17 +68,17 @@ def test_get_products():
     
     assert isinstance(products, list)  # Check if response is a list
     if products:
-        assert 'id' in products[0]  # Check if 'id' exists in the first product
+        assert '_id' in products[0]  # Check if '_id' exists in the first product
 
 # Test GET /api/products/{product_id} endpoint
 def test_get_product_by_id():
-    response = requests.get(f'{BASE_URL}/api/products/101')
+    response = requests.get(f'{BASE_URL}/api/products/6777aa9f9a51b49961e628eb')
     
     assert response.status_code == 200  # Check if status code is 200
     product = response.json()  # Convert response to JSON
     
-    assert 'id' in product  # Check if 'id' exists in the product
-    assert product['id'] == 1  # Check if product ID matches
+    assert '_id' in product  # Check if 'id' exists in the product
+    assert product['_id'] == '6777aa9f9a51b49961e628eb'  # Check if product ID matches
 
 # Test GET /api/products/{product_id} endpoint for non-existent product
 def test_get_non_existent_product():
