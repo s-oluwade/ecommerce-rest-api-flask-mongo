@@ -15,7 +15,7 @@ COPY entrypoint.sh /app/entrypoint.sh
 
 # Set environment variables
 ENV FLASK_APP=server.py
-ENV FLASK_ENV=development
+ENV FLASK_ENV=production
 
 # Expose port 5000 to allow access to the Flask app
 EXPOSE 5000
