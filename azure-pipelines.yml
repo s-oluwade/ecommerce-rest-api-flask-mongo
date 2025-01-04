@@ -67,6 +67,6 @@ steps:
 
 # Step 7: Clean up (optional)
 - script: |
-    docker-compose down
+    docker compose down
   displayName: 'Clean Up Containers'
 
