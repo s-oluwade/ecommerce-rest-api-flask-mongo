@@ -35,13 +35,7 @@ steps:
     cat pylint-report.txt
   displayName: 'Run Pylint Static Code Analysis'
 
-# Step 3: Run unit tests using requests (assuming you have unit tests written)
-- script: |
-    ls
-    pytest tests/test_server.py -q
-  displayName: 'Run Unit Tests'
-
-# Step 4: Build Docker image
+# Step 3: Build Docker image
 - task: Docker@2
   inputs:
     command: 'buildAndPush'
@@ -53,18 +47,23 @@ steps:
     buildContext: '$(Build.SourcesDirectory)'
   displayName: 'Build and Push Docker Image'
 
-# Step 5: Deploy using Docker Compose
+# Step 4: Deploy using Docker Compose
 - script: |
     docker compose up -d
   displayName: 'Deploy Application using Docker Compose'
 
-# Step 6: Ensure Containers are Running
+# Step 5: Ensure Containers are Running
 - script: |
     sleep 10  # Wait for containers to start
     docker ps
     docker inspect --format '{{.State.Running}}' $(dockerImageName)
     docker inspect --format '{{.State.Running}}' mongodb
   displayName: 'Ensure Containers are Running'
+
+# Step 6: Run Integration Tests
+- script: |
+    pytest tests/test_server.py -q
+  displayName: 'Run Integration Tests'
 
 # Step 7: Clean up (optional)
 - script: |
