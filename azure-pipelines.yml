@@ -55,7 +55,7 @@ steps:
 # Step 5: Ensure Containers are Running
 - script: |
     sleep 10  # Wait for containers to start
-    docker ps
+    docker ps -a
     docker inspect --format '{{.State.Running}}' $(dockerImageName)
     docker inspect --format '{{.State.Running}}' mongodb
   displayName: 'Ensure Containers are Running'
