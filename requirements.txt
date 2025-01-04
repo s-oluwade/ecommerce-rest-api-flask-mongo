@@ -4,3 +4,4 @@ pymongo==4.5.0
 pylint==2.17.5
 pytest==7.4.0
 requests==2.31.0
+gunicorn
