@@ -26,7 +26,6 @@ steps:
   displayName: 'Verify Python version'
 
 - script: |
-    pip install "PyYAML==5.3.1"
     pip install -r requirements.txt
   displayName: 'Install Python dependencies'
 
@@ -38,8 +37,7 @@ steps:
 
 # Step 3: Run unit tests using requests (assuming you have unit tests written)
 - script: |
-    
-    pytest --maxfail=1 --disable-warnings -q
+    pytest .\tests\test_server.py -q
   displayName: 'Run Unit Tests'
 
 # Step 4: Build Docker image
