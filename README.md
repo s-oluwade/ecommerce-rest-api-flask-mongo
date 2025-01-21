@@ -1,13 +1,13 @@
 # Ecommerce REST API with Flask and MongoDB
 
-# Features
+## Features
 
 Cart Management: Create, retrieve, update, and delete carts.
 Product Management: Create, and retrieve products.
 CI/CD Deployment: Automated deployment to Azure App Service as a docker container using Azure Pipelines.
 Testing: Automated Testing with pytest.
 
-# API Endpoints
+## API Endpoints
 
 Carts:
 GET /carts: Retrieve all carts.
@@ -19,7 +19,7 @@ GET /products: Retrieve all products.
 GET /products/<product_id>: Retrieve a specific product by ID.
 POST /products: Create a new product.
 
-# Local Installation
+## Local Installation
 
 ## Clone 
 git clone https://github.com/s-oluwade/ecommerce-rest-api-flask-mongo.git
