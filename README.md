@@ -10,14 +10,17 @@ Testing: Automated Testing with pytest.
 ## API Endpoints
 
 ### Carts:
-`GET /carts: Retrieve all carts.
-POST /carts: Create a new cart.
-DELETE /carts/<product_id>: Delete a cart.`
+`GET /carts: Retrieve all carts.`
+
+`POST /carts: Create a new cart.`
+
+`DELETE /carts/<product_id>: Delete a cart.`
 
 ### Products:
 `GET /products: Retrieve all products.`
 
 `GET /products/<product_id>: Retrieve a specific product by ID.`
+
 `POST /products: Create a new product.`
 
 ## Local Installation
